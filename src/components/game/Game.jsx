@@ -20,6 +20,7 @@ function Game () {
   const [currentPlayer, setCurrentPlayer] = useState(-1)
   const [winner, setWinner] = useState(0)
   const [winnerLine, setWinnerLine] = useState([]) 
+  const [draw, setDraw] = useState(false)
 
   const handleClick = (position) => {
     if (gameState[position] === 0 && winner === 0){
@@ -34,7 +35,6 @@ function Game () {
       const values = line.map((pos) => gameState[pos])
       const sum = values.reduce((sum, value) => sum + value)
       if (sum === 3 || sum === -3) {setWinner(sum / 3) ; setWinnerLine(line)}
-      
     })
   }
 
@@ -42,6 +42,14 @@ function Game () {
     setGameState(Array(9).fill(0))
     setWinner(0)
     setWinnerLine([])
+    setDraw(false)
+  }
+
+  const verifyDraw = () => {
+   /* if (gameState.filter((value) => value === 0).length === 0)*/
+   if (gameState.find((value) => value === 0) === undefined && winner === 0) {
+    setDraw(true)
+   }
   }
 
   const verifyWinnerLine = (position) => winnerLine.find((value) => value === position) !== undefined
@@ -49,7 +57,12 @@ function Game () {
   useEffect(() => {
     setCurrentPlayer(currentPlayer * -1)
     verifyGame()
+    verifyDraw()
   }, [gameState])
+
+  useEffect(() => {
+    if (winner !==0 ) setDraw(false)
+  }, [winner])
 
   return (
     <div className={styles.Gamecontent}> 
@@ -60,6 +73,7 @@ function Game () {
           key={`game-option-pos-${position}`} 
           status={value} onClick={() => handleClick(position)}
           isWinner={verifyWinnerLine(position)}
+          isDraw={draw}
         />
         )
       }
@@ -68,6 +82,7 @@ function Game () {
       <Gameinfo currentPlayer={currentPlayer}
        winner={winner}
        onReset={handleReset}
+       isDraw={draw}
        />
       
     </div>
