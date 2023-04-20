@@ -22,6 +22,10 @@ function Game () {
   const [winner, setWinner] = useState(0)
   const [winnerLine, setWinnerLine] = useState([]) 
   const [draw, setDraw] = useState(false)
+  const [circleWin, setCircleWin] = useState(0)
+  const [xwin, setXwin] = useState(0)
+  const [empate, setEmpate] = useState(0)
+
 
   const handleClick = (position) => {
     if (gameState[position] === 0 && winner === 0){
@@ -36,6 +40,16 @@ function Game () {
       const values = line.map((pos) => gameState[pos])
       const sum = values.reduce((sum, value) => sum + value)
       if (sum === 3 || sum === -3) {setWinner(sum / 3) ; setWinnerLine(line)}
+      if (sum === 3 || sum === -3) {
+        const winner = sum / 3
+        setWinner(winner)
+        if (winner === 1) {
+          setCircleWin(circleWin + 1)
+        } else {
+          setXwin(xwin + 1)
+        }
+        setWinnerLine(line)
+      }
     })
   }
 
@@ -50,6 +64,7 @@ function Game () {
    /* if (gameState.filter((value) => value === 0).length === 0)*/
    if (gameState.find((value) => value === 0) === undefined && winner === 0) {
     setDraw(true)
+    setEmpate(empate + 1)
    }
   }
 
@@ -86,7 +101,11 @@ function Game () {
             isDraw={draw}
           />
       </div>
-      <Score />
+      <Score  
+        isCircle={circleWin} 
+        isX={xwin}
+        isDraw={empate}
+      />
     </>
 
   )
