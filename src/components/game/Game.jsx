@@ -70,15 +70,18 @@ function Game () {
 
   const verifyWinnerLine = (position) => winnerLine.find((value) => value === position) !== undefined
 
+  useEffect (() => {
+    verifyDraw()
+  }, [currentPlayer])
+
   useEffect(() => {
     setCurrentPlayer(currentPlayer * -1)
     verifyGame()
-    verifyDraw()
   }, [gameState])
 
   useEffect(() => {
-    if (winner !==0 ) setDraw(false)
-  }, [winner])
+    if (winner !== 0) setDraw(false)
+  }, [winner, gameState])
 
   return (
     <>
@@ -104,7 +107,7 @@ function Game () {
       <Score  
         isCircle={circleWin} 
         isX={xwin}
-        isDraw={empate}
+        isEmpate={empate}
       />
     </>
 

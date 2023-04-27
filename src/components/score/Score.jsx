@@ -2,7 +2,7 @@ import styles from './Score.module.css'
 
 import Icon from '../icon/Icon'
 
-function Score ({ isCircle, isX, isDraw }) {
+function Score ({ isCircle, isX, isEmpate }) {
   return (
     <>
       <h4>Placar:</h4>
@@ -13,7 +13,7 @@ function Score ({ isCircle, isX, isDraw }) {
         </div>
         <div>
           <h4 className={styles.span}>Draw</h4>
-          <h2 className={styles.scoreContent}>{isDraw}</h2>
+          <h2 className={styles.scoreContent}>{isEmpate}</h2>
         </div>
         <div>
           <Icon iconName="x"/>
